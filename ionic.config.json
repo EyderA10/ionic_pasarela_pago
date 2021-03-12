@@ -1,0 +1,7 @@
+{
+  "name": "pasarela-pago",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
