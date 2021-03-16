@@ -10,6 +10,7 @@ export const environment = {
       sandbox: 'sandbox',
       production: 'production'
     },
+    production: 'AUbY38kBYMPN9p9_I1k_Chvl8hUM8LBJElABT1p4jSC765ItnurX2TWYj8QzvYleoT0XM7EsHtleVkX1',
     client_id: 'AY6LbiXKqQOTWmSEUABZnGMrE2qiNkW04PWWnxgXoL5QyS37GdU4V20h0RXUAE3Hm5qeo6Vqs-YJ6I6f',
     client_secret: 'ELiKObzkNueeteT9xXcIn5mJrlJ0vMOItKd33jnbRfeol2mNijFzoFMI4qw9GVQqTDotPGYMxZWeMWRc'
   }

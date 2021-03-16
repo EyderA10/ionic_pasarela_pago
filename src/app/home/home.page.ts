@@ -100,15 +100,15 @@ export class HomePage implements OnInit {
       env: mode.sandbox, // o production
       style: {
         size: 'responsive',
-        color: 'gold',
+        color: 'blue',
         shape: 'pill',
         label: 'checkout',
         tagline: 'true'
       },
-      // procesos de pago
-      payment: (data: any, actions: any) => {
+      // proceso de pago
+      payment: () => {
         // peticion a la api
-        return actions.request.post('http://localhost:8000/api/paypal/create-payment')
+        return paypal.request.post('http://localhost:8000/api/paypal/create-payment')
           .then((res: any) => {
             // returna res.id
             console.log('payment:', res, res.id);
@@ -117,13 +117,13 @@ export class HomePage implements OnInit {
       },
       // checkout del pago
       onAuthorize: (data: any, actions: any) => {
-        return actions.request.post('http://localhost:8000/api/paypal/checkout', {
+        // peticion a la api
+        return paypal.request.post('http://localhost:8000/api/paypal/execute-payment', {
           paymentID: data.paymentID,
           payerID:   data.payerID
         })
           .then((res: any) =>  {
-            console.log('authorizase:', res);
-            alert('EL PAGO HA PASADO CON EXITO!!');
+            console.log('pay success:', res);
           });
       }
     }, '#paypal-button');
