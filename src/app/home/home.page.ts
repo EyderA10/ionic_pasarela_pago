@@ -18,7 +18,6 @@ export class HomePage implements OnInit {
   public icon: string;
   public paymount: number;
   public currency: string;
-  public paypalConfig: any;
 
   constructor(
     private apiStripe: ApiStripeService
@@ -106,24 +105,26 @@ export class HomePage implements OnInit {
         tagline: 'true'
       },
       // proceso de pago
-      payment: () => {
-        // peticion a la api
-        return paypal.request.post('http://localhost:8000/api/paypal/create-payment')
-          .then((res: any) => {
-            // returna res.id
-            console.log('payment:', res, res.id);
-            return res.id;
-          });
+      payment: (data: any, actions: any) => {
+        // crear pago
+        return actions.request.get('http://localhost:8000/api/paypal/create-payment')
+        .then((res: any) => {
+          console.log('payment:', res, res.id);
+          return res.id;
+        });
       },
       // checkout del pago
       onAuthorize: (data: any, actions: any) => {
         // peticion a la api
-        return paypal.request.post('http://localhost:8000/api/paypal/execute-payment', {
-          paymentID: data.paymentID,
-          payerID:   data.payerID
-        })
-          .then((res: any) =>  {
-            console.log('pay success:', res);
+        const { paymentID, payerID, paymentToken } = data;
+        return actions.request.get(`http://localhost:8000/api/paypal/execute-payment?paymentId=${paymentID}&token=${paymentToken}&PayerID=${payerID}`)
+          .then((res: any) => {
+            console.log('pay-success:', res);
+            if (res.state === 'approved'){
+              alert('EL PAGO HA PASADO CON EXITO!!');
+            }else{
+              alert('HA OCURRIDO UN ERROR AL REALIZAR ESTE METODO DE PAGO');
+            }
           });
       }
     }, '#paypal-button');

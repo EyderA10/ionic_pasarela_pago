@@ -19,17 +19,5 @@ export class ApiStripeService {
     return this.http.get(`${this.url}/paymount/${tokenId}`, {headers});
   }
 
-  // makeRequestToCreatePayment(): Observable<any> {
-  //   const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
-  //   return this.http.post(`${this.url}/paypal/create-payment`, {headers});
-  // }
 
-  // makeRequestToCheckPayment(paymentID: any, payerID: any): Observable<any> {
-  //   const params = {
-  //     paymentID,
-  //     payerID
-  //   };
-  //   const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
-  //   return this.http.post(`${this.url}/paypal/checkout`, {params}, {headers});
-  // }
 }
