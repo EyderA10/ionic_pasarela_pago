@@ -74,7 +74,7 @@ export class HomePage implements OnInit {
           const errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
         } else {
-          // envio el token al servidor
+          // envio el token a la api
           console.log('stripe-client:', result);
           this.stripeTokenHandler(result.token);
         }
@@ -86,9 +86,11 @@ export class HomePage implements OnInit {
     this.apiStripe.makeRequestToApiStripe(token.id).subscribe(
       response => {
         console.log('stripe-api', response);
+        alert('EL PAGO HA PASADO CON EXITO!!');
       },
       error => {
         console.log(error);
+        alert('HA OCURRIDO UN ERROR AL REALIZAR EL PAGO');
       }
     );
   }
@@ -106,18 +108,19 @@ export class HomePage implements OnInit {
       },
       // proceso de pago
       payment: (data: any, actions: any) => {
-        // crear pago
-        return actions.request.get('http://localhost:8000/api/paypal/create-payment')
+        // peticion a la api
+        const { mode } = environment;
+        return actions.request.get(`http://${mode.production}:8000/api/paypal/create-payment`)
         .then((res: any) => {
           console.log('payment:', res, res.id);
           return res.id;
         });
       },
-      // checkout del pago
+      // ejecucion y checkout del pago
       onAuthorize: (data: any, actions: any) => {
         // peticion a la api
         const { paymentID, payerID, paymentToken } = data;
-        return actions.request.get(`http://localhost:8000/api/paypal/execute-payment?paymentId=${paymentID}&token=${paymentToken}&PayerID=${payerID}`)
+        return actions.request.get(`http://${mode.production}:8000/api/paypal/execute-payment?paymentId=${paymentID}&token=${paymentToken}&PayerID=${payerID}`)
           .then((res: any) => {
             console.log('pay-success:', res);
             if (res.state === 'approved'){

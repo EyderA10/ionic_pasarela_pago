@@ -5,6 +5,10 @@
 export const environment = {
   production: false,
   apiKeyStripe: 'pk_test_51IUCKDIBGciP9o185RrZxgHxm1hAQe4VaAXY4FeVS1N60N1wgqL3c2Utiax8336se6vVU0VsKWQH48vBAaII3CIF002hetOW4t',
+  mode: {
+    local: 'localhost',
+    production: '192.168.1.6' // ip de mi pc
+  },
   paypal: {
     mode: {
       sandbox: 'sandbox',

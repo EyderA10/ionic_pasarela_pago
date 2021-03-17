@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ApiStripeService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = 'http://localhost:8000/api';
+    this.url = `http://${environment.mode.production}:8000/api`;
   }
 
   makeRequestToApiStripe(tokenId: any): Observable<any> {
