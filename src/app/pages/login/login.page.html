@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Autenticacion de usuarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #formLogin="ngForm" autocomplete="off"
+    (ngSubmit)="handleLogin(formLogin)">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input clearInput name="email" #email="ngModel"
+        [(ngModel)]="user.email" type="email" placeholder="Direccion de Email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input clearInput name="password" #password="ngModel"
+        [(ngModel)]="user.password" type="password" placeholder="Contraseña"></ion-input>
+    </ion-item>
+    <ion-button type="submit" color="tertiary" expand="block" fill="solid">Log
+      in</ion-button>
+  </form>
+  <hr>
+  <ion-title>Inicia sesion con tus Redes sociales</ion-title>
+  <ion-button shape="round" color="danger" (click)="handleLoginWithGoogle()">
+    <ion-icon slot="icon-only" name="logo-google"></ion-icon>
+  </ion-button>
+  <div *ngIf="resGg || resApi">
+    {{resGg}}
+    {{resApi}}
+  </div>
+  <ion-button shape="round" color="primary"
+    (click)="handleLoginWithFacebook()">
+    <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
+  </ion-button>
+  <div *ngIf="resFb || resApi">
+    {{resFb}}
+    {{resApi}}
+  </div>
+  <ion-title>Si aun no tienes cuenta, registrate!</ion-title>
+  <ion-button routerLink="/register" fill="outline" color="primary">
+    <ion-icon slot="start" name="person-add"></ion-icon>
+    Registrate
+  </ion-button>
+</ion-content>

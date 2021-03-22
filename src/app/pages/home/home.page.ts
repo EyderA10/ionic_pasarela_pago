@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ApiStripeService } from './../services/api-stripe.service';
+import { ApiStripeService } from '../../services/api-stripe.service';
 
 declare var paypal;
 declare var Stripe;
@@ -110,7 +110,7 @@ export class HomePage implements OnInit {
       payment: (data: any, actions: any) => {
         // peticion a la api
         const { mode } = environment;
-        return actions.request.get(`http://${mode.production}:8000/api/paypal/create-payment`)
+        return actions.request.get(`http://${mode.local}:8000/api/paypal/create-payment`)
         .then((res: any) => {
           console.log('payment:', res, res.id);
           return res.id;
@@ -119,8 +119,9 @@ export class HomePage implements OnInit {
       // ejecucion y checkout del pago
       onAuthorize: (data: any, actions: any) => {
         // peticion a la api
+        const { mode } = environment;
         const { paymentID, payerID, paymentToken } = data;
-        return actions.request.get(`http://${mode.production}:8000/api/paypal/execute-payment?paymentId=${paymentID}&token=${paymentToken}&PayerID=${payerID}`)
+        return actions.request.get(`http://${mode.local}:8000/api/paypal/execute-payment?paymentId=${paymentID}&token=${paymentToken}&PayerID=${payerID}`)
           .then((res: any) => {
             console.log('pay-success:', res);
             if (res.state === 'approved'){

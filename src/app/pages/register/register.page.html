@@ -1,0 +1,28 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-back-button></ion-back-button>
+  </ion-buttons>
+  <ion-title>Volver</ion-title>
+</ion-toolbar>
+
+<ion-content>
+  <form #formRegister="ngForm" autocomplete="off" (ngSubmit)="handleRegister(formRegister)">
+    <ion-item>
+      <ion-label  position="floating" >Nombre</ion-label>
+      <ion-input clearInput name="name" #name="ngModel" [(ngModel)]="user.name" type="text" placeholder="Nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label  position="floating" >Email</ion-label>
+      <ion-input clearInput name="email" #email="ngModel" [(ngModel)]="user.email" type="email" placeholder="Direccion de Email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label  position="floating" >Password</ion-label>
+      <ion-input clearInput name="password" #password="ngModel" [(ngModel)]="user.password" type="password" placeholder="Contraseña"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label  position="floating">Confirm</ion-label>
+      <ion-input clearInput name="confirm" #confirm="ngModel" [(ngModel)]="user.confirm" type="password" placeholder="Confirmar Contraseña"></ion-input>
+    </ion-item>
+    <ion-button type="submit" color="tertiary" expand="block" fill="solid">sign up</ion-button>
+  </form>
+</ion-content>

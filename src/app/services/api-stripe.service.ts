@@ -12,7 +12,7 @@ export class ApiStripeService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = `http://${environment.mode.production}:8000/api`;
+    this.url = `http://${environment.mode.local}:8000/api`;
   }
 
   makeRequestToApiStripe(tokenId: any): Observable<any> {
