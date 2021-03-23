@@ -31,7 +31,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="@string/custom_url_scheme" />
             </intent-filter>
-
+          <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/fb_app_id"/>
+          <meta-data
+            android:name="com.facebook.sdk.ApplicationName"
+            android:value="@string/fb_app_name" />
+          <meta-data
+            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="@bool/fb_auto_log_app_events_enabled" />
+          <meta-data
+            android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled"
+            android:value="@bool/fb_advertiser_id_collection_enabled" />
         </activity>
 
         <provider
@@ -46,7 +55,6 @@
     </application>
 
     <!-- Permissions -->
-
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Camera, Photos, input file -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>

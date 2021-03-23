@@ -4,4 +4,6 @@
     <string name="title_activity_main">pasarela-pago</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="fb_app_id">487173978985923</string>
+    <string name="fb_app_name">laravel-auth</string>
 </resources>

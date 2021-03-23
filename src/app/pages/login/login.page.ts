@@ -3,7 +3,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ApiAuthService } from '../../services/api-auth.service';
 import { User } from '../../models/User';
-import { Router } from '@angular/router';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +13,6 @@ import { Router } from '@angular/router';
 export class LoginPage implements OnInit {
 
   public user: User;
-  public resFb: any;
-  public resGg: any;
-  public resApi: any;
 
   constructor(
     private apiAuth: ApiAuthService,
@@ -35,23 +32,37 @@ export class LoginPage implements OnInit {
 
   handleLoginWithGoogle() {
     this.googlePlus.login({})
-      .then(res => this.resGg = JSON.stringify(res))
-      .catch(err => this.resGg = `Error ${JSON.stringify(err)}`);
+      .then((res) => {
+
+        console.log(res);
+        if (res.token) {
+          this.apiAuth.callbackService('google').subscribe(
+            response => {
+              console.log('google', response);
+            },
+            err => {
+              console.log('err-google', err);
+            }
+          );
+        }
+      }
+      )
+      .catch(err => console.log(err));
   }
 
   handleLoginWithFacebook() {
     this.fb.login(['public_profile', 'email'])
       .then((res: FacebookLoginResponse) => {
-        this.resFb = JSON.stringify(res);
+        console.log(res);
         if (res.status === 'connected') {
           this.apiAuth.callbackService('facebook').subscribe(
             response => {
-              this.resApi = JSON.stringify(response);
+             console.log(response);
             }, err => {
-              this.resApi = JSON.stringify(err);
+              console.log(err);
             });
           } else {
-          this.resFb = JSON.stringify(res);
+          console.log(res);
         }
       });
   }

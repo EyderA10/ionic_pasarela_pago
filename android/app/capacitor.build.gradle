@@ -12,7 +12,7 @@ dependencies {
 
     implementation "com.facebook.android:facebook-android-sdk:9.0.0"
     implementation "com.google.android.gms:play-services-auth:15.0.1"
-    implementation "com.google.android.gms:play-services-identity:15.0.1"
+    implementation 'com.google.android.gms:play-services-identity:17.0.0'
 }
 
 

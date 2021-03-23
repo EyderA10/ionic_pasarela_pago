@@ -25,18 +25,10 @@
   <ion-button shape="round" color="danger" (click)="handleLoginWithGoogle()">
     <ion-icon slot="icon-only" name="logo-google"></ion-icon>
   </ion-button>
-  <div *ngIf="resGg || resApi">
-    {{resGg}}
-    {{resApi}}
-  </div>
   <ion-button shape="round" color="primary"
     (click)="handleLoginWithFacebook()">
     <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
   </ion-button>
-  <div *ngIf="resFb || resApi">
-    {{resFb}}
-    {{resApi}}
-  </div>
   <ion-title>Si aun no tienes cuenta, registrate!</ion-title>
   <ion-button routerLink="/register" fill="outline" color="primary">
     <ion-icon slot="start" name="person-add"></ion-icon>
