@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ApiAuthService } from '../../services/api-auth.service';
+import { HttpClient } from '@angular/common/http';
 
 import { User } from '../../models/User';
 import { Router } from '@angular/router';
@@ -16,12 +17,14 @@ export class LoginPage implements OnInit {
 
   public user: User;
   public token: string;
+  public getAvatar: any;
 
   constructor(
     private apiAuth: ApiAuthService,
     private router: Router,
     private fb: Facebook,
     private googlePlus: GooglePlus,
+    private http: HttpClient
   ) {
     this.user = new User('', '', '', '');
   }
@@ -66,15 +69,22 @@ export class LoginPage implements OnInit {
   handleLoginWithGoogle() {
     this.googlePlus.login({})
       .then((res) => {
-
-        console.log(res);
         if (res.token) {
-          this.apiAuth.callbackService('google', res.token).subscribe(
+          this.http.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${res.token}`)
+          .subscribe(
             response => {
-              console.log('google', response);
+              console.log('google_res', response);
+              this.apiAuth.saveUserService(response).subscribe(
+                response => {
+                  console.log('api-response', response);
+                },
+                err => {
+                  console.log(err);
+                }
+              );
             },
             err => {
-              console.log('err-google', err);
+              console.log(err);
             }
           );
         }
@@ -87,16 +97,6 @@ export class LoginPage implements OnInit {
     this.fb.login(['public_profile', 'email'])
       .then((res: FacebookLoginResponse) => {
         console.log(res);
-        if (res.status === 'connected') {
-          this.apiAuth.callbackService('facebook', res).subscribe(
-            response => {
-              console.log(response);
-            }, err => {
-              console.log(err);
-            });
-        } else {
-          console.log(res);
-        }
       });
   }
 

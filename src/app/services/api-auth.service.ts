@@ -41,8 +41,13 @@ export class ApiAuthService {
     return this.http.post(`${this.url}/sign-in`, params, { headers });
   }
 
-  callbackService(service: string, token: any): Observable<any> {
-    return this.http.get(`${this.url}/login/${service}/callback?token=${token}`);
+  saveUserService(res: any): Observable<any> {
+    return this.http.post(`${this.url}/get-user-social`, {
+      email: res.email,
+      name: res.name,
+      service: 'google',
+      serviceId: res.id
+    });
   }
 
    getUser() {
