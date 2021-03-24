@@ -23,6 +23,6 @@
       <ion-label  position="floating">Confirm</ion-label>
       <ion-input clearInput name="confirm" #confirm="ngModel" [(ngModel)]="user.confirm" type="password" placeholder="Confirmar Contraseña"></ion-input>
     </ion-item>
-    <ion-button type="submit" color="tertiary" expand="block" fill="solid">sign up</ion-button>
+    <ion-button type="submit" color="tertiary" expand="block" fill="solid" [disabled]="formRegister.invalid">sign up</ion-button>
   </form>
 </ion-content>

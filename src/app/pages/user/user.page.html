@@ -4,14 +4,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-item>
+<ion-item *ngIf="user">
   <ion-avatar slot="start">
-    <img src="" alt="img.user">
+    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="img.user">
   </ion-avatar>
-  <ion-label>Mi nombre</ion-label>
+  <ion-label>{{user.name}}</ion-label>
 </ion-item>
 
-<ion-button size="small" color="primary" shape="round">
+<ion-button size="small" color="primary" shape="round" (click)="logout()">
   <ion-icon name="log-out-outline"></ion-icon>
   Log out
 </ion-button>

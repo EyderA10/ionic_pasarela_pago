@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ApiAuthService } from '../../services/api-auth.service';
+
 import { User } from '../../models/User';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
+import validator from 'validator';
 
 @Component({
   selector: 'app-login',
@@ -13,12 +15,13 @@ import {  Router } from '@angular/router';
 export class LoginPage implements OnInit {
 
   public user: User;
+  public token: string;
 
   constructor(
     private apiAuth: ApiAuthService,
     private router: Router,
     private fb: Facebook,
-    private googlePlus: GooglePlus
+    private googlePlus: GooglePlus,
   ) {
     this.user = new User('', '', '', '');
   }
@@ -27,7 +30,37 @@ export class LoginPage implements OnInit {
   }
 
   handleLogin(form: any) {
-    console.log(this.user);
+    const errss = this.formValid();
+
+    if (errss.length === 0) {
+      this.apiAuth.signIn(this.user).subscribe(
+        response => {
+
+          if (response.status === 'success') {
+            this.token = response.token;
+            this.apiAuth.signIn(this.user, true).subscribe(
+              response => {
+
+                localStorage.setItem('auth-token', this.token);
+                localStorage.setItem('auth-user', JSON.stringify(response.token));
+                this.router.navigateByUrl('/user');
+              },
+              error => {
+                console.log(error);
+              }
+            );
+          }
+        },
+        error => {
+          alert('Lo sentimos pero estos credenciales no coinciden con los que tenemos guardados');
+          console.log(error);
+        }
+      );
+    } else {
+      errss.forEach((errr: string) => {
+        alert(errr);
+      });
+    }
   }
 
   handleLoginWithGoogle() {
@@ -36,7 +69,7 @@ export class LoginPage implements OnInit {
 
         console.log(res);
         if (res.token) {
-          this.apiAuth.callbackService('google').subscribe(
+          this.apiAuth.callbackService('google', res.token).subscribe(
             response => {
               console.log('google', response);
             },
@@ -55,15 +88,30 @@ export class LoginPage implements OnInit {
       .then((res: FacebookLoginResponse) => {
         console.log(res);
         if (res.status === 'connected') {
-          this.apiAuth.callbackService('facebook').subscribe(
+          this.apiAuth.callbackService('facebook', res).subscribe(
             response => {
-             console.log(response);
+              console.log(response);
             }, err => {
               console.log(err);
             });
-          } else {
+        } else {
           console.log(res);
         }
       });
+  }
+
+  private formValid(): Array<string> {
+    const { email, password } = this.user;
+    const errors: any = [];
+
+    if (!validator.isEmail(email) || email.trim().length === 0) {
+      errors.push(`Este email ${email} es invalido o debe ser requerido!!`);
+    }
+
+    if (password.length > 10) {
+      errors.push('la contraseña debe ser menor o igual a 10 caracteres!!');
+    }
+
+    return errors;
   }
 }

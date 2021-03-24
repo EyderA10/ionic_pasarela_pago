@@ -1,6 +1,6 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../models/User';
@@ -16,9 +16,9 @@ export class ApiAuthService {
 
   constructor(
     private http: HttpClient,
-    private nativeStorage: NativeStorage
+    private route: Router
   ) {
-    this.url = `http://${environment.mode.local}:8000/api`;
+    this.url = `http://${environment.mode.production}:8000/api`;
   }
 
   signUp(user: User): Observable<any> {
@@ -41,36 +41,33 @@ export class ApiAuthService {
     return this.http.post(`${this.url}/sign-in`, params, { headers });
   }
 
-  callbackService(service: string): Observable<any> {
-    return this.http.get(`${this.url}/login/${service}/callback`);
+  callbackService(service: string, token: any): Observable<any> {
+    return this.http.get(`${this.url}/login/${service}/callback?token=${token}`);
   }
 
-  getUser(): any {
-    this.nativeStorage.getItem('auth-user')
-    .then(
-      data => this.user = data,
-      error => console.error(error)
-    );
+   getUser() {
+    this.user = JSON.parse(localStorage.getItem('auth-user'));
 
     if (this.user !== null) {
       return this.user;
-    } else {
+    }else{
       return null;
     }
-
   }
 
-  getToken(): any {
-    this.nativeStorage.getItem('auth-token')
-    .then(
-      data => this.token = data,
-      error => console.error(error)
-    );
+   getToken() {
+    this.token = localStorage.getItem('auth-token');
 
     if (this.token !== null) {
       return this.token;
-    } else {
+    }else{
       return null;
     }
+  }
+
+  async logout() {
+    localStorage.removeItem('auth-user');
+    localStorage.removeItem('auth-token');
+    this.route.navigateByUrl('/login');
   }
 }

@@ -9,7 +9,6 @@ import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 import { ApiAuthService } from '../../services/api-auth.service';
 import { Facebook } from '@ionic-native/facebook/ngx';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 
@@ -22,6 +21,6 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
     HttpClientModule
   ],
   declarations: [LoginPage],
-  providers: [ApiAuthService, Facebook, NativeStorage, GooglePlus]
+  providers: [ApiAuthService, Facebook, GooglePlus]
 })
 export class LoginPageModule {}
